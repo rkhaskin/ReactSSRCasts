@@ -21,6 +21,8 @@ app.use(express.static('public'));
 app.get('*', (req, res) => {
   const store = createStore(req);
 
+  // matchRoutes returns an array of promises representing all the pending network requests
+  // from all action creators that we are calling
   const promises = matchRoutes(Routes, req.path)
     .map(({ route }) => {
       return route.loadData ? route.loadData(store) : null;
@@ -33,6 +35,7 @@ app.get('*', (req, res) => {
       }
     });
 
+  // wait until all the promises are resolved. Similar to Stream.zip  
   Promise.all(promises).then(() => {
     const context = {};
     const content = renderer(req, store, context);

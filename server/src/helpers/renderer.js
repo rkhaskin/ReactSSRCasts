@@ -3,6 +3,8 @@ import { renderToString } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { renderRoutes } from 'react-router-config';
+// this will be used to prevent xss attacks when we put store contants on the html page.
+// whatever special chars are there, they will be replaced with unicode. JSON.stringify does not prevent xss
 import serialize from 'serialize-javascript';
 import { Helmet } from 'react-helmet';
 import Routes from '../client/Routes';
